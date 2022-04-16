@@ -3,9 +3,63 @@ import numpy as np
 # Below is an implementation of line_search reinforcing the strong Wolfe condition
 
 
-def line_search(f, myfprime, xk, pk, old_fval=None,
-                old_old_fval=None, args=(), c1=1e-4, c2=0.9, amax=None,
-                extra_condition=None, maxiter=10):
+def line_search(f, fprime, xk, pk):
+    """
+    Line search enforcing weak Wolfe condition (Armoji and Wolfe condition)
+    """
+    alpha = 0
+    beta = 2**100
+    t = 1
+    c1 = 1e-4
+    c2 = 0.9
+
+    fc = [0]  # num function evaluations made
+    gc = [0]  # num gradient evaluations made
+
+    def fxk1(alpha):
+        fc = [0]
+        return f(xk + alpha * pk)
+
+    # def dfxk1
+
+    num_iter = 0
+
+    while True:
+        if not S(f, fprime, xk, pk, alpha, c1):
+            beta = t
+        elif not C(f, fprime, xk, pk, alpha, c2):
+            alpha = t
+        else:
+            break
+
+        if beta < 2**100:
+            t = (alpha + beta)/2
+        else:
+            t = 2 * alpha
+        num_iter += 1
+
+    return t, num_iter
+
+
+def S(f, fprime, xk, pk, alpha, c1):
+    f_xk = f(xk)
+    f_xk1 = f(xk + alpha * pk)
+    df_xk = fprime(xk)
+    return f_xk1 <= f_xk + c1 * alpha * np.dot(df_xk, pk)
+
+
+def C(f, fprime, xk, pk, alpha, c2):
+    df_xk = fprime(xk)
+    df_xk1 = fprime(xk + alpha * pk)
+    return -np.dot(pk, df_xk1) <= -c2 * np.dot(pk, df_xk)
+
+
+# SciPy implementation
+
+
+def line_search1(f, myfprime, xk, pk, old_fval=None,
+                 old_old_fval=None, args=(), c1=1e-4, c2=0.9, amax=None,
+                 extra_condition=None, maxiter=10):
     """Find alpha that satisfies strong Wolfe conditions.
 
     Parameters

@@ -11,14 +11,14 @@ def line_search(f, fprime, xk, pk):
     c1 = 1e-4
     c2 = 0.9
 
-    fc = [0]
-    gc = [0]
+    fc = [0]  # num function evaluations made
+    gc = [0]  # num gradient evaluations made
 
     def fxk1(alpha):
         fc = [0]
         return f(xk + alpha * pk)
 
-    def
+    # def dfxk1
 
     num_iter = 0
 
@@ -36,7 +36,8 @@ def line_search(f, fprime, xk, pk):
             t = 2 * alpha
         num_iter += 1
 
-    return t, num_iter
+    # return t, num_iter
+    return t
 
 
 def S(f, fprime, xk, pk, alpha, c1):
