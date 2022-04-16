@@ -3,9 +3,9 @@ import numpy as np
 # Below is an implementation of line_search reinforcing the strong Wolfe condition
 
 
-def line_searchd(f, myfprime, xk, pk, old_fval=None,
-                 old_old_fval=None, args=(), c1=1e-4, c2=0.9, amax=None,
-                 extra_condition=None, maxiter=10):
+def line_search(f, myfprime, xk, pk, old_fval=None,
+                old_old_fval=None, args=(), c1=1e-4, c2=0.9, amax=None,
+                extra_condition=None, maxiter=10):
     """Find alpha that satisfies strong Wolfe conditions.
 
     Parameters

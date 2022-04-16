@@ -1,4 +1,5 @@
-import line_search_strong
+import line_search_strong as strong
+import line_search_weak as weak
 import numpy as np
 
 
@@ -13,5 +14,8 @@ def obj_grad(x):
 start_point = np.array([1.8, 1.7])
 search_gradient = np.array([-1.0, -1.0])
 
-# print(line_search_strong.line_search(
+print(strong.line_search(
+    obj_func, obj_grad, start_point, search_gradient))
+
+print(weak.line_search(
     obj_func, obj_grad, start_point, search_gradient))
