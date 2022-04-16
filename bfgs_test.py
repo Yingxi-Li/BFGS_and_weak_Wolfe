@@ -7,7 +7,7 @@ def obj_func(x):
 
 
 def obj_grad(x):
-    return [2*x[0], 2*x[1]]
+    return np.array([2*x[0], 2*x[1]])
 
 
 x0 = np.array([10, 10])

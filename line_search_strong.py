@@ -11,20 +11,20 @@ def line_search(f, fprime, xk, pk):
     beta = 2**100
     t = 1
     c1 = 1e-4
-    c2 = 0.9
+    c2 = 0.5
 
-    fc = [0]  # num function evaluations made
-    gc = [0]  # num gradient evaluations made
+    # fc = [0]  # num function evaluations made
+    # gc = [0]  # num gradient evaluations made
 
-    def fxk1(alpha):
-        fc = [0]
-        return f(xk + alpha * pk)
+    # def fxk1(alpha):
+    #     fc = [0]
+    #     return f(xk + alpha * pk)
 
     # def dfxk1
 
     num_iter = 0
 
-    while True:
+    while num_iter <= 10:
         if not S(f, fprime, xk, pk, alpha, c1):
             beta = t
         elif not C(f, fprime, xk, pk, alpha, c2):
@@ -38,6 +38,7 @@ def line_search(f, fprime, xk, pk):
             t = 2 * alpha
         num_iter += 1
 
+    print("number iterations:", num_iter)
     return t, num_iter
 
 
