@@ -3,8 +3,8 @@ import numpy as np
 
 
 def obj_func(x):
-    return np.max(x, 0)
-    # return np.sum(np.absolute(x))
+    # return np.max(x, 0)
+    return np.sum(np.absolute(x))
 
 
 def obj_grad(x):
