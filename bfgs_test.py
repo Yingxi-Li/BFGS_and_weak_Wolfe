@@ -3,16 +3,18 @@ import numpy as np
 
 
 def obj_func(x):
-    return (x[0])**2+(x[1])**2
+    return np.max(x, 0)
+    # return np.sum(np.absolute(x))
 
 
 def obj_grad(x):
-    return np.array([2*x[0], 2*x[1]])
+    fprime = np.sign(x)
+    return fprime
 
 
-x0 = np.array([10, 10])
+x0 = np.array([10])
 
-H0 = np.identity(2)
+H0 = np.identity(1)
 
 x, dx = bfgs.bfgs(obj_func, obj_grad, x0, H0)
 
