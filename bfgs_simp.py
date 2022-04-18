@@ -31,7 +31,7 @@ def bfgs(f, fprime, x0, H0, ls_type):
         yk = np.array(dfxk1) - np.array(dfxk)
 
         print('fxk1', f(xk), 'fxk', fx)
-        if fx - f(xk) < 1e-3 or f(xk) > fx:  # compare zero lists
+        if fx - f(xk) < 1e-3:  # compare zero lists
             break
 
         Hk = update(pk, yk, Hk, t, dim)
