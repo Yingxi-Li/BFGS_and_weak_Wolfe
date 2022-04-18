@@ -33,7 +33,7 @@ def line_search(f, fprime, xk, pk):
 
     print("line search iterations:", num_iter)
     # return t, num_iter
-    return t
+    return "resulting step size:", t
 
 
 def S(f, fprime, xk, pk, t, c1):
