@@ -3,12 +3,13 @@ import numpy as np
 
 
 def obj_func(x):
-    # return np.max(x, 0)
-    return 8*np.linalg.norm(x)+7*x[0]
+    # return 8*np.linalg.norm(x)+7*x[0]
+    return np.sum(np.absolute(x))
 
 
 def obj_grad(x):
-    fprime = np.array([8*x[0]/np.linalg.norm(x)+7, 8*x[1]/np.linalg.norm(x)])
+    # fprime = np.array([8*x[0]/np.linalg.norm(x)+7, 8*x[1]/np.linalg.norm(x)])
+    fprime = np.sign(x)
     return fprime
 
 

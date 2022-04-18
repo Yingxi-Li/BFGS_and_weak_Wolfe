@@ -33,20 +33,25 @@ def line_search(f, fprime, xk, pk):
 
     print("line search iterations:", num_iter)
     # return t, num_iter
-    return "resulting step size:", t
+    return t
 
 
 def S(f, fprime, xk, pk, t, c1):
     f_xk = f(xk)
-    # f_xk1 = f(xk + alpha * pk)
     f_xk1 = f(xk + t * pk)
     df_xk = fprime(xk)
-    # return f_xk1 <= f_xk + c1 * alpha * np.dot(df_xk, pk)
     return f_xk1 < f_xk + c1 * t * np.dot(df_xk, pk)  # s = gradientf dot pk
 
 
 def C(fprime, xk, pk, t, c2):
     df_xk = fprime(xk)
-    # df_xk1 = fprime(xk + alpha * pk)
     df_xk1 = fprime(xk + t * pk)
     return -np.dot(pk, df_xk1) < -c2 * np.dot(pk, df_xk)
+
+
+def C2(fprime, xk, pk, t, c2):
+    df_xk = fprime(xk)
+    df_xk1 = fprime(xk + t * pk)
+    hprimet = np.dot(pk, df_xk1)
+    s = np.dot(pk, df_xk)
+    hprimet > c2 * s
