@@ -10,17 +10,8 @@ def line_search(f, fprime, xk, pk):
     alpha = 0
     beta = 2**100
     t = 1
-    c1 = 1e-4
+    c1 = 0
     c2 = 0.5
-
-    # fc = [0]  # num function evaluations made
-    # gc = [0]  # num gradient evaluations made
-
-    # def fxk1(alpha):
-    #     fc = [0]
-    #     return f(xk + alpha * pk)
-
-    # def dfxk1
 
     num_iter = 0
 
@@ -39,7 +30,7 @@ def line_search(f, fprime, xk, pk):
         num_iter += 1
 
     print("number iterations:", num_iter)
-    return t, num_iter
+    return t
 
 
 def S(f, fprime, xk, pk, alpha, c1):
@@ -52,7 +43,7 @@ def S(f, fprime, xk, pk, alpha, c1):
 def C(f, fprime, xk, pk, alpha, c2):
     df_xk = fprime(xk)
     df_xk1 = fprime(xk + alpha * pk)
-    return -np.dot(pk, df_xk1) <= -c2 * np.dot(pk, df_xk)
+    return np.absolute(np.dot(pk, df_xk1)) <= c2 * np.absolute(np.dot(pk, df_xk))
 
 
 # SciPy implementation

@@ -40,6 +40,7 @@ def S(f, fprime, xk, pk, t, c1):
     f_xk = f(xk)
     f_xk1 = f(xk + t * pk)
     df_xk = fprime(xk)
+    # print(f_xk1, f_xk)
     return f_xk1 < f_xk + c1 * t * np.dot(df_xk, pk)  # s = gradientf dot pk
 
 

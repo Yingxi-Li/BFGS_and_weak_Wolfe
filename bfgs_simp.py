@@ -1,8 +1,9 @@
 import numpy as np
 import line_search_weak as weak
+import line_search_strong as strong
 
 
-def bfgs(f, fprime, x0, H0):
+def bfgs(f, fprime, x0, H0, ls_type):
 
     dim = x0.shape[0]
 
@@ -10,13 +11,18 @@ def bfgs(f, fprime, x0, H0):
     Hk = H0
     xk = x0
 
+    is_weak = (ls_type == "weak")
+
     while k <= 10:
         print("iteration:", k, "x:", xk, "fx", f(xk))
         # print("Hk", Hk)
         pk = -Hk @ fprime(xk)
         # print("pk:", pk)
-        t = weak.line_search(f, fprime, xk, pk)
-        # print("t", t)
+        if is_weak:
+            t = weak.line_search(f, fprime, xk, pk)
+        else:
+            t = strong.line_search(f, fprime, xk, pk)
+        print("t", t)
         fx = f(xk)
         dfxk = fprime(xk)
         xk = xk + t * pk
@@ -24,7 +30,8 @@ def bfgs(f, fprime, x0, H0):
 
         yk = np.array(dfxk1) - np.array(dfxk)
 
-        if np.absolute(f(xk) - fx) < 1e-3:  # compare zero lists
+        print('fxk1', f(xk), 'fxk', fx)
+        if fx - f(xk) < 1e-3 or f(xk) > fx:  # compare zero lists
             break
 
         Hk = update(pk, yk, Hk, t, dim)
