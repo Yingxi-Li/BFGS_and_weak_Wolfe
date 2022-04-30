@@ -13,7 +13,7 @@ def line_search(f, fprime, xk, pk):
 
     num_iter = 0
     has_found = False
-    while num_iter < 10 and has_found == False:
+    while num_iter < 50 and has_found == False:
 
         if not S(f, fprime, xk, pk, t, c1):
             beta = t

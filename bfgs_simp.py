@@ -10,10 +10,12 @@ def bfgs(f, fprime, x0, H0, ls_type):
     k = 0
     Hk = H0
     xk = x0
+    fxs = []
 
     is_weak = (ls_type == "weak")
 
-    while k <= 10:
+    while k <= 100:
+        fxs.append(f(xk))
         print("iteration:", k, "x:", xk, "fx", f(xk))
         # print("Hk", Hk)
         pk = -Hk @ fprime(xk)
@@ -31,14 +33,14 @@ def bfgs(f, fprime, x0, H0, ls_type):
         yk = np.array(dfxk1) - np.array(dfxk)
 
         print('fxk1', f(xk), 'fxk', fx)
-        if fx - f(xk) < 1e-3:  # compare zero lists
+        if fx - f(xk) < 1e-10:  # compare zero lists
             break
 
         Hk = update(pk, yk, Hk, t, dim)
 
         k = k + 1
 
-    return xk, f(xk)
+    return xk, f(xk), fxs
 
 
 def update(pk, yk, Hk, t, dim):

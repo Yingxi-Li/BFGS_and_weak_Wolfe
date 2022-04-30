@@ -11,16 +11,19 @@ def line_search(f, fprime, xk, pk):
     beta = 2**100
     t = 1
     c1 = 0
-    c2 = 0.5
+    c2 = 0.99
 
     num_iter = 0
-
-    while num_iter <= 10:
-        if not S(f, fprime, xk, pk, alpha, c1):
+    has_found = False
+    while num_iter <= 10 and has_found == False:
+        if not S(f, fprime, xk, pk, t, c1):
             beta = t
-        elif not C(f, fprime, xk, pk, alpha, c2):
+        elif not C(f, fprime, xk, pk, t, c2):
             alpha = t
         else:
+            break
+
+        if has_found == True:
             break
 
         if beta < 2**100:
@@ -29,20 +32,21 @@ def line_search(f, fprime, xk, pk):
             t = 2 * alpha
         num_iter += 1
 
-    print("number iterations:", num_iter)
+    print("line search iterations:", num_iter)
     return t
 
 
-def S(f, fprime, xk, pk, alpha, c1):
+def S(f, fprime, xk, pk, t, c1):
     f_xk = f(xk)
-    f_xk1 = f(xk + alpha * pk)
+    f_xk1 = f(xk + t * pk)
     df_xk = fprime(xk)
-    return f_xk1 <= f_xk + c1 * alpha * np.dot(df_xk, pk)
+    return f_xk1 <= f_xk + c1 * t * np.dot(df_xk, pk)
 
 
-def C(f, fprime, xk, pk, alpha, c2):
+def C(f, fprime, xk, pk, t, c2):
     df_xk = fprime(xk)
-    df_xk1 = fprime(xk + alpha * pk)
+    df_xk1 = fprime(xk + t * pk)
+    # print(xk, xk + t * pk, df_xk, df_xk1)
     return np.absolute(np.dot(pk, df_xk1)) <= c2 * np.absolute(np.dot(pk, df_xk))
 
 

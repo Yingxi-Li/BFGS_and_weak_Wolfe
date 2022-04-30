@@ -14,23 +14,25 @@ import numpy as np
 # def df(x): return A[np.argmax([A[i] @ x.T + b[i] for i in range(num_pieces)])]
 
 
-# # n = 4 l1-norm
+# # l1-norm
 # def f(x): return np.sum(np.absolute(x))
+
 
 # def df(x): return np.sign(x)
 
-# lasso
-
+# Lasso
 def f(x):
-    return
+    return np.absolute(x[0]) + x[1]**2
 
 
 def df(x):
     return np.array([np.sign(x[0]), 2*x[1]])
 
 
-x0 = np.array([10, -10])
+x0 = np.array([19, 1])
 
 H0 = np.identity(2)
 
-x, dx = bfgs.bfgs(f, df, x0, H0, "strong")
+x, dx, fxs = bfgs.bfgs(f, df, x0, H0, "weak")
+
+print(fxs)
