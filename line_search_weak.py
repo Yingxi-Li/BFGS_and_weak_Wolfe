@@ -8,12 +8,12 @@ def line_search(f, fprime, xk, pk):
     alpha = 0
     beta = 2**100
     t = 1
-    c1 = 0
-    c2 = 0.5
+    c1 = 1e-4
+    c2 = 0.9
 
     num_iter = 0
     has_found = False
-    while num_iter < 50 and has_found == False:
+    while num_iter < 100 and has_found == False:
 
         if not S(f, fprime, xk, pk, t, c1):
             beta = t

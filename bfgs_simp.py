@@ -16,10 +16,9 @@ def bfgs(f, fprime, x0, H0, ls_type):
 
     while k <= 100:
         fxs.append(f(xk))
-        print("iteration:", k, "x:", xk, "fx", f(xk))
-        # print("Hk", Hk)
+        # print("iteration:", k, "x:", xk, "fx", f(xk))
         pk = -Hk @ fprime(xk)
-        # print("pk:", pk)
+        print("Hk", Hk)
         if is_weak:
             t = weak.line_search(f, fprime, xk, pk)
         else:
@@ -32,7 +31,7 @@ def bfgs(f, fprime, x0, H0, ls_type):
 
         yk = np.array(dfxk1) - np.array(dfxk)
 
-        print('fxk1', f(xk), 'fxk', fx)
+        # print('fxk1', f(xk), 'fxk', fx)
         if fx - f(xk) < 1e-10:  # compare zero lists
             break
 
@@ -45,6 +44,6 @@ def bfgs(f, fprime, x0, H0, ls_type):
 
 def update(pk, yk, Hk, t, dim):
     # print("yk", yk)
-    Vk = np.identity(dim) - pk @ yk.T / np.dot(yk, pk)
-    Hk1 = Vk @ Hk @ Vk.T + t / np.dot(yk, pk) * pk @ pk.T
+    Vk = np.identity(dim) - np.outer(pk, yk) / np.dot(yk, pk)
+    Hk1 = Vk @ Hk @ Vk.T + t / np.dot(yk, pk) * np.outer(pk, pk)
     return Hk1
