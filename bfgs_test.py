@@ -13,11 +13,17 @@ def obj_grad(x):
     return fprime
 
 
-x0 = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1]) + \
-    np.random.uniform(-0.1, 0.1, size=9)
+n = 100
 
-H0 = np.identity(9)
+# x0 = np.array([1, -1, 1, -1, 1, -1, 1, -1, 1]) + \
+#     np.random.uniform(-0.1, 0.1, size=9)
+# x0 = 10 * np.ones(n) + np.random.rand(n)
+# x0_1 = np.random.uniform(-10, 10)
+# x0 = np.array([x0_1, 10-np.absolute(x0_1)])
+x0 = 10 * np.random.uniform(-1, 1, size=n)
 
-x, dx, fxs = bfgs.bfgs(obj_func, obj_grad, x0, H0, "weak")
+H0 = np.identity(n)
 
+x, dx, fxs, iters = bfgs.bfgs(obj_func, obj_grad, x0, H0, "strong")
+print(x0)
 print(fxs)

@@ -17,22 +17,70 @@ import numpy as np
 # # l1-norm
 # def f(x): return np.sum(np.absolute(x))
 
-
 # def df(x): return np.sign(x)
 
-# Lasso
+
+# # Lasso
+# def f(x):
+#     return np.absolute(x[0]) + x[1]**2
+
+# def df(x):
+#     return np.array([np.sign(x[0]), 2*x[1]])
+
+
+# # Lasso
+n = 8
+# A = np.random.rand(n, n) + 10 * np.identity(n)
+eig = np.zeros(n)
+
+for i in range(n):
+    eig[i] = 0.8 ** i
+
+S = np.random.rand(n, n)
+S_inv = np.linalg.inv(S)
+
+A = S @ np.diag(eig) @ S_inv
+
+# eig = np.full(n, np.random.rand(),)
+# S = np.random.rand(n, n)
+# S_inv = np.linalg.inv(S)
+
+# A = S @ np.diag(eig) @ S_inv
+
+
 def f(x):
-    return np.absolute(x[0]) + x[1]**2
+    return np.linalg.norm(np.matmul(A, x))**2 + np.linalg.norm(x, ord=1)
 
 
 def df(x):
-    return np.array([np.sign(x[0]), 2*x[1]])
+    return 2 * np.matmul(A, x) + np.sign(x)
 
 
-x0 = np.array([19, 1])
+# results = []
+# num_iters = []
 
-H0 = np.identity(2)
+# for i in range(50):
+#     x0_1 = np.random.uniform(-2, 4)
+#     x0 = np.array([x0_1, 20 - np.absolute(x0_1)])
 
-x, dx, fxs = bfgs.bfgs(f, df, x0, H0, "weak")
+#     H0 = np.identity(2)
+
+#     x, dx, fxs, num_iter = bfgs.bfgs(f, df, x0, H0, "strong")
+
+#     num_iters.append(num_iter)
+
+#     results.append(dx)
+
+# # print(x0)
+# # print(fxs)
+# print(results)
+# print(num_iters)
+
+
+x0 = 10 * np.random.uniform(-1, 1, n)
+
+H0 = np.identity(n)
+
+x, dx, fxs, num_iter = bfgs.bfgs(f, df, x0, H0, "weak")
 
 print(fxs)

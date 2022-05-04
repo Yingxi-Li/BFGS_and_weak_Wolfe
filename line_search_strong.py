@@ -10,12 +10,12 @@ def line_search(f, fprime, xk, pk):
     alpha = 0
     beta = 2**100
     t = 1
-    c1 = 0
-    c2 = 0.99
+    c1 = 1e-4
+    c2 = 0.7
 
     num_iter = 0
     has_found = False
-    while num_iter <= 100 and has_found == False:
+    while num_iter <= 50 and has_found == False:
         if not S(f, fprime, xk, pk, t, c1):
             beta = t
         elif not C(f, fprime, xk, pk, t, c2):
@@ -33,7 +33,7 @@ def line_search(f, fprime, xk, pk):
         num_iter += 1
 
     print("line search iterations:", num_iter)
-    return t
+    return t, num_iter
 
 
 def S(f, fprime, xk, pk, t, c1):
@@ -50,7 +50,7 @@ def C(f, fprime, xk, pk, t, c2):
     return np.absolute(np.dot(pk, df_xk1)) <= c2 * np.absolute(np.dot(pk, df_xk))
 
 
-# SciPy implementation
+# SciPy implementation #
 
 
 def line_search1(f, myfprime, xk, pk, old_fval=None,

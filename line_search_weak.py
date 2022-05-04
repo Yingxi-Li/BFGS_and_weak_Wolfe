@@ -9,11 +9,11 @@ def line_search(f, fprime, xk, pk):
     beta = 2**100
     t = 1
     c1 = 1e-4
-    c2 = 0.9
+    c2 = 0.7
 
     num_iter = 0
     has_found = False
-    while num_iter < 100 and has_found == False:
+    while num_iter < 50 and has_found == False:
 
         if not S(f, fprime, xk, pk, t, c1):
             beta = t
@@ -32,8 +32,7 @@ def line_search(f, fprime, xk, pk):
         num_iter += 1
 
     print("line search iterations:", num_iter)
-    # return t, num_iter
-    return t
+    return t, num_iter
 
 
 def S(f, fprime, xk, pk, t, c1):
